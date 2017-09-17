@@ -9,7 +9,6 @@ scope: source.odin
 variables:
   identifier: '\b[[:alpha:]_][[:alnum:]_]*\b'
   type_chars: '[[:alnum:]\s,._^<>\[\]-]'
-  screaming_identifier: '\b[A-Z_](?![a-z])[A-Z_0-9]+\b'
 
 contexts:
   main:
@@ -17,10 +16,11 @@ contexts:
 
   global:
     - include: comments
-    - include: types
     - include: keywords
-    - include: functions-and-declarations
+    - include: types
     # - include: custom_styling
+    - include: functions
+    - include: declarations
     - include: strings
     - include: string-escaped-char
 
@@ -53,67 +53,62 @@ contexts:
           pop: true
 
   keywords:
-    - match: \b(import|import_load|foreign|foreign_library|foreign_system_library)\b
+    - match: \b(if|else|when|while|for|in|defer|match|return|give)\b
       scope: keyword.control.odin
-    - match: \b(if|else|when|for|in|defer|match|return|const)\b
+    - match: \b(type|fallthrough|break|continue|case|default|vector|dynamic)\b
       scope: keyword.control.odin
-    - match: \b(fallthrough|break|continue|case|vector|static|dynamic|atomic)\b
+    - match: \b(thread_local|using|no_alias|immutable)\b
       scope: keyword.control.odin
-    - match: \b(using|do)\b
-      scope: keyword.control.odin
-    - match: \b(asm|yield|await)\b
+    - match: \b(asm|volatile|push_allocator|push_context)\b
       scope: keyword.control.odin
     - match: \b(push_allocator|push_context)\b
       scope: keyword.control.odin
-    - match: \b(nil|true|false)\b
+    - match: \b(nil|true|false|iota)\b
       scope: constant.language.odin
-    - match: '\b(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
+    - match: '\b(\d(\d|_)*(.(\d|_))?)((e|E)(\+|-)?\d+)?\b'
       scope: constant.numeric.odin
-    - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xX](\h|_)+))[ijk]?\b'
+    - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xX](\h|_)+))\b'
       scope: constant.numeric.odin
-    - match: '---'
-      scope: constant.numeric.odin
-    - match: \b(var|let|type|macro|struct|enum|union|raw_union|map|bit_field)\b
+    - match: \b(macro|proc|struct|enum|union|raw_union)\b
       scope: storage.type.odin
-    - match: \b(cast|transmute)\b
+    - match: \b(cast|transmute|down_cast|union_cast)\b
       scope: keyword.function.odin
+    - match: \b((size_of|align_of|offset_of)(_val)?|type_of_val|type_info)\b\s*\(
+      captures:
+        1: keyword.function.odin
     - match: '(#\s*{{identifier}})'
-      # scope: storage.constant.tag.odin
-      # scope: constant.numeric.tag.odin
       scope: keyword.tag.odin
     - match: \b(context)\b
       scope: keyword.operator.odin
 
-  functions-and-declarations:
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(proc)\s*[(]'
+  functions:
+    - match: \b({{identifier}})\b\s*:\s*:\s*(proc|macro)\s*\(
       captures:
         1: meta.function.odin entity.name.function.odin
         2: storage.type.odin
-    - match: \b(size_of|align_of|offset_of|type_of|type_info)\b\s*\(
-      captures:
-        1: keyword.function.odin
-    - match: (proc|macro)\s*[\(]
-      captures:
-        1: storage.type.odin
+    - include: function-use
     - match: ({{identifier}})\s*[!]?\s*[\(]
       captures:
         1: support.function.odin
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(struct|union|raw_union|enum|)'
+
+  declarations:
+    - match: \b({{identifier}})\b\s*:\s*(type)?\s*:\s*((type)|(struct|enum|union|raw_union))\s+
       captures:
         1: meta.type.odin entity.name.type.odin
-        2: storage.type.odin
-    - match: '\b({{screaming_identifier}})\s*[:].*[:]\s*'
-      captures:
-        1: constant.user.odin meta.constant.odin entity.name.constant.odin
+        2: keyword.control.odin
+        4: keyword.control.odin
+        5: storage.type.odin
+      push:
+        - match: ''
+          pop: true
+        - include: types
 
   types:
-    - match: '\b(struct|enum|union|raw_union|bit_field)\b(?:(\{)(\}))?'
+    - match: '\b(struct|enum|union|raw_union)\b(?:(\{)(\}))?'
       captures:
         1: storage.type.odin
         2: meta.block.odin punctuation.definition.block.begin.odin
         3: meta.block.odin punctuation.definition.block.end.odin
-    - match: '\b(proc|type)\b'
-      scope: storage.type.odin
     - match: (\[)(\d*)(\])(?=[[:alpha:]_])
       scope: meta.brackets.odin
       captures:
@@ -121,11 +116,9 @@ contexts:
         2: constant.numeric.odin
         3: punctuation.definition.brackets.end.odin
     - include: basic-types
-    - match: '\$\s*({{identifier}})'
-      scope: storage.type.odin
 
   basic-types:
-    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f16|f32|f64)|(complex32|complex64|complex128)|(quaternion128|quaternion256)|byte|bool|string|rune|rawptr|any)\b'
+    - match: '\b((i8|i16|i32|i64|int)?|(u8|u16|u32|u64|uint)?|(f32|f64)?|byte|bool|string|rune|rawptr|any)\b'
       scope: storage.type.odin
 
   strings:
