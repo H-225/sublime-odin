@@ -53,8 +53,12 @@ contexts:
           pop: true
 
   keywords:
-    - match: \b(if|else|when|while|for|in|defer|match|return|give)\b
+    - match: \b(if|else|when|while|for|in|defer|match|return|give|foreign|foreign_system_library|do|import)\b
       scope: keyword.control.odin
+    - match: "---"
+      scope: keyword.undef.odin
+    - match: "(\\.\\.\\<?)"
+      scope: keyword.range.odin
     - match: \b(type|fallthrough|break|continue|case|default|vector|dynamic)\b
       scope: keyword.control.odin
     - match: \b(thread_local|using|no_alias|immutable)\b
@@ -73,40 +77,42 @@ contexts:
       scope: storage.type.odin
     - match: \b(cast|transmute|down_cast|union_cast)\b
       scope: keyword.function.odin
-    - match: \b((size_of|align_of|offset_of)(_val)?|type_of_val|type_info)\b\s*\(
+    - match: \b((size_of|align_of|offset_of|type_of)(_val)?|type_info_of)\b\s*\(
       captures:
         1: keyword.function.odin
     - match: '(#\s*{{identifier}})'
       scope: keyword.tag.odin
     - match: \b(context)\b
       scope: keyword.operator.odin
+    - match: \${{identifier}}
+      scope: storage.type.odin
 
   functions:
     - match: \b({{identifier}})\b\s*:\s*:\s*(proc|macro)\s*\(
       captures:
         1: meta.function.odin entity.name.function.odin
-        2: storage.type.odin
+        2: keyword.control.odin
     - include: function-use
     - match: ({{identifier}})\s*[!]?\s*[\(]
       captures:
         1: support.function.odin
 
   declarations:
-    - match: \b({{identifier}})\b\s*:\s*(type)?\s*:\s*((type)|(struct|enum|union|raw_union))\s+
+    - match: \b({{identifier}})\b\s*:\s*(type)?\s*:\s*((type)|(struct|enum|union|raw_union|bit_field))\s*
       captures:
         1: meta.type.odin entity.name.type.odin
         2: keyword.control.odin
         4: keyword.control.odin
-        5: storage.type.odin
+        5: keyword.control.odin
       push:
         - match: ''
           pop: true
         - include: types
 
   types:
-    - match: '\b(struct|enum|union|raw_union)\b(?:(\{)(\}))?'
+    - match: '\b(struct|enum|union|raw_union|bit_field)\b(?:(\{)(\}))?'
       captures:
-        1: storage.type.odin
+        1: keyword.control.odin
         2: meta.block.odin punctuation.definition.block.begin.odin
         3: meta.block.odin punctuation.definition.block.end.odin
     - match: (\[)(\d*)(\])(?=[[:alpha:]_])
@@ -118,7 +124,7 @@ contexts:
     - include: basic-types
 
   basic-types:
-    - match: '\b((i8|i16|i32|i64|int)?|(u8|u16|u32|u64|uint)?|(f32|f64)?|byte|bool|string|rune|rawptr|any)\b'
+    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f32|f64)|(byte|bool|string|rune|rawptr|any)|(complex(64|128)))\b'
       scope: storage.type.odin
 
   strings:
