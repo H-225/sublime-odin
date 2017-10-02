@@ -53,7 +53,7 @@ contexts:
           pop: true
 
   keywords:
-    - match: \b(if|else|when|while|for|in|defer|match|return|give|foreign|foreign_system_library|do|import)\b
+    - match: \b(if|else|when|while|for|in|defer|match|switch|return|give|foreign|foreign_system_library|do|import)\b
       scope: keyword.control.odin
     - match: "---"
       scope: keyword.undef.odin
