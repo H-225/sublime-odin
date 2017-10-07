@@ -57,7 +57,7 @@ contexts:
       scope: keyword.control.odin
     - match: "---"
       scope: keyword.undef.odin
-    - match: "(\\.\\.\\<?)"
+    - match: "(\\.\\.(\\<|\\.?))"
       scope: keyword.range.odin
     - match: \b(type|fallthrough|break|continue|case|default|vector|dynamic)\b
       scope: keyword.control.odin
