@@ -24,15 +24,6 @@ contexts:
     - include: strings
     - include: string-escaped-char
 
-
-  custom_styling:
-    - match: \b([A-Z_](?![a-z])[A-Z_0-9]+)\b
-      captures:
-        1: storage.constant.odin
-
-    - match: \b([A-Z][a-z0-9]+)([_A-Z][a-z0-9]*)*\b
-      scope: storage.type.odin
-
   block-comment:
     - match: /\*
       scope: punctuation.definition.comment.odin
@@ -86,6 +77,16 @@ contexts:
       scope: keyword.operator.odin
     - match: \${{identifier}}
       scope: storage.type.odin
+    - match: ([\+\-\*/\=]\=?)|(\=?\<|\>\=?)
+      scope: keyword.operator.infix.odin
+    - match: (::?)
+      scope: keyword.operator.declare.odin
+    - match: (&)
+      scope: keyword.operator.address.odin
+    - match: (\^)
+      scope: keyword.operator.deref.odin
+    - match: (!)
+      scope: keyword.operator.not.odin
 
   functions:
     - match: \b({{identifier}})\b\s*:\s*:\s*(proc|macro)\s*\(
@@ -93,9 +94,9 @@ contexts:
         1: meta.function.odin entity.name.function.odin
         2: keyword.control.odin
     - include: function-use
-    - match: ({{identifier}})\s*[!]?\s*[\(]
+    - match: ({{identifier}})\s*\(
       captures:
-        1: support.function.odin
+        1: entity.name.function.odin
 
   declarations:
     - match: \b({{identifier}})\b\s*:\s*(type)?\s*:\s*((type)|(struct|enum|union|raw_union|bit_field))\s*
