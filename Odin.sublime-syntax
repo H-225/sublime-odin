@@ -87,12 +87,15 @@ contexts:
       scope: keyword.operator.deref.odin
     - match: (!)
       scope: keyword.operator.not.odin
+    - match: \b(inline|noinline)\b
+      scope: keyword.inline.odin
 
   functions:
-    - match: \b({{identifier}})\b\s*:\s*:\s*(proc|macro)\s*\(
+    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*\(
       captures:
         1: meta.function.odin entity.name.function.odin
-        2: keyword.control.odin
+        2: keyword.inline.odin
+        3: keyword.control.odin
     - include: function-use
     - match: ({{identifier}})\s*\(
       captures:
