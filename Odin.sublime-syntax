@@ -128,7 +128,7 @@ contexts:
     - include: basic-types
 
   basic-types:
-    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f32|f64)|(byte|bool|string|rune|rawptr|any)|(complex(64|128)))\b'
+    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f32|f64)|(byte|bool|string|rune|rawptr|uintptr|any|)|(complex(64|128)))\b'
       scope: storage.type.odin
 
   strings:
