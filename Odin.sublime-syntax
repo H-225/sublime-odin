@@ -44,7 +44,7 @@ contexts:
           pop: true
 
   keywords:
-    - match: \b(if|else|when|while|for|in|defer|match|switch|return|give|foreign|foreign_system_library|do|import)\b
+    - match: \b(if|else|when|for|in|defer|match|switch|return|give|foreign|foreign_system_library|do|import)\b
       scope: keyword.control.odin
     - match: "---"
       scope: keyword.undef.odin
@@ -71,13 +71,15 @@ contexts:
     - match: \b((size_of|align_of|offset_of|type_of)(_val)?|type_info_of)\b\s*\(
       captures:
         1: keyword.function.odin
-    - match: '(#\s*{{identifier}})'
+    - match: '(#(location|caller_location|type))'
       scope: keyword.tag.odin
+    # - match: '(#{{identifier}})'
+    #   scope: invalid.odin
     - match: \b(context)\b
       scope: keyword.operator.odin
     - match: \${{identifier}}
       scope: storage.type.odin
-    - match: ([\+\-\*/\=]\=?)|(\=?\<|\>\=?)
+    - match: ([\+\-\*/\=\|]\=?)|(\=?\<|\>\=?)
       scope: keyword.operator.infix.odin
     - match: (::?)
       scope: keyword.operator.declare.odin
@@ -91,13 +93,13 @@ contexts:
       scope: keyword.inline.odin
 
   functions:
-    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*\(
+    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*("[contextless|c|std]")?\s*\(
       captures:
         1: meta.function.odin entity.name.function.odin
         2: keyword.inline.odin
         3: keyword.control.odin
     - include: function-use
-    - match: ({{identifier}})\s*\(
+    - match: \b({{identifier}})\b\s*\(
       captures:
         1: entity.name.function.odin
 
