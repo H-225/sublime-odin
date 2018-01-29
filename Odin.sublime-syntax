@@ -81,7 +81,7 @@ contexts:
       scope: keyword.operator.odin
     - match: \${{identifier}}
       scope: storage.type.odin
-    - match: ([\+\-\*/\=\|]\=?)|(\=?\<|\>\=?)
+    - match: ([\+\-\*/\=\||%]\=?)|(\=?\<|\>\=?)
       scope: keyword.operator.infix.odin
     - match: (::?)
       scope: keyword.operator.declare.odin
@@ -95,11 +95,12 @@ contexts:
       scope: keyword.inline.odin
 
   functions:
-    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*("[contextless|c|std]")?\s*\(
+    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*("(contextless|c|std)")?\s*\(
       captures:
         1: meta.function.odin entity.name.function.odin
         2: keyword.inline.odin
         3: keyword.control.odin
+        4: string.quoted.double.odin
     - include: function-use
     - match: \b({{identifier}})\b\s*\(
       captures:
@@ -132,7 +133,7 @@ contexts:
     - include: basic-types
 
   basic-types:
-    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f32|f64)|(byte|bool|string|rune|rawptr|uintptr|any|)|(complex(64|128)))\b'
+    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f32|f64)|(bool|b8|b16|b32|b64)|(byte|string|rune|rawptr|uintptr|any|)|(complex(64|128)))\b'
       scope: storage.type.odin
 
   strings:
