@@ -73,7 +73,7 @@ contexts:
     - match: \b((size_of|align_of|offset_of|type_of)(_val)?|type_info_of)\b\s*\(
       captures:
         1: keyword.function.odin
-    - match: '(#(location|caller_location|type))'
+    - match: '(#(location|caller_location|type_alias|type|no_bounds_check))\b'
       scope: keyword.tag.odin
     # - match: '(#{{identifier}})'
     #   scope: invalid.odin
