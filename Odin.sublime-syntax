@@ -44,13 +44,13 @@ contexts:
           pop: true
 
   keywords:
-    - match: \b(if|else|when|for|in|defer|match|switch|return|give|foreign|foreign_system_library|do|import)\b
+    - match: \b(if|else|when|for|in|defer|match|switch|case|default|return|give|foreign|foreign_system_library|do|import)\b
       scope: keyword.control.odin
     - match: "---"
       scope: keyword.undef.odin
-    - match: "(\\.\\.(\\<|\\.?))"
+    - match: (\.\.(\<|\.?))
       scope: keyword.range.odin
-    - match: \b(type|fallthrough|break|continue|case|default|vector|dynamic)\b
+    - match: \b(type|fallthrough|break|continue|map|vector|dynamic)\b
       scope: keyword.control.odin
     - match: \b(thread_local|using|no_alias|immutable)\b
       scope: keyword.control.odin
@@ -60,7 +60,7 @@ contexts:
       scope: keyword.control.odin
     - match: \b(nil|true|false|iota)\b
       scope: constant.language.odin
-    - match: (\d+\.)
+    - match: (\d+\.)(?!\.)
       scope: constant.numeric.odin
     - match: '\b(\d(\d|_)*(.(\d|_))?)((e|E)(\+|-)?\d+)?\b'
       scope: constant.numeric.odin
@@ -95,7 +95,7 @@ contexts:
       scope: keyword.inline.odin
 
   functions:
-    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*("(contextless|c|std)")?\s*\(
+    - match: \b({{identifier}})\b\s*:\s*:\s*(inline|noinline)?\s*(proc|macro)\s*("(contextless|c|std)")?\s*(?:\(|\[)
       captures:
         1: meta.function.odin entity.name.function.odin
         2: keyword.inline.odin
