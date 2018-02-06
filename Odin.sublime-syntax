@@ -60,13 +60,13 @@ contexts:
       scope: keyword.control.odin
     - match: \b(nil|true|false|iota)\b
       scope: constant.language.odin
-    - match: (\d+\.)(?!\.)
+    - match: \b(\d+\.)(?!\.)
       scope: constant.numeric.odin
     - match: '\b(\d(\d|_)*(.(\d|_))?)((e|E)(\+|-)?\d+)?\b'
       scope: constant.numeric.odin
     - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xX](\h|_)+))\b'
       scope: constant.numeric.odin
-    - match: \b(macro|proc|struct|enum|union|raw_union)\b
+    - match: \b(macro|proc|struct|enum|union|raw_union|distinct)\b
       scope: storage.type.odin
     - match: \b(cast|transmute|down_cast|union_cast)\b
       scope: keyword.function.odin
