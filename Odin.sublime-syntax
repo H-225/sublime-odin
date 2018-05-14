@@ -125,7 +125,7 @@ contexts:
       scope: storage.type.odin
 
   basic-types:
-    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f16|f32|f64)|(complex32|complex64|complex128)|(quaternion128|quaternion256)|byte|bool|string|rune|rawptr|any)\b'
+    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f16|f32|f64)|(complex32|complex64|complex128)|(quaternion128|quaternion256)|byte|bool|string|rune|rawptr|any|typeid)\b'
       scope: storage.type.odin
 
   strings:
