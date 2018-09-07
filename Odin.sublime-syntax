@@ -1,6 +1,7 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
+# @NOTE: THIS FILE USES SINGLE BACKSLASHES FOR ESCAPING!!!!!!!!!!!!!!!!!!!!!!!!!!!
 name: Odin
 file_extensions:
   - odin
@@ -53,7 +54,11 @@ contexts:
           pop: true
 
   keywords:
-    - match: \b(import|import_load|foreign|foreign_library|foreign_system_library)\b
+    - match: (->|\.\.|::)
+      scope: keyword.operator.odin
+    - match: (\+|-|*|/|>|<|\^|!|~|&|=|:)=?
+      scope: keyword.operator.odin
+    - match: \b(import|import_load|package|foreign|foreign_library|foreign_system_library)\b
       scope: keyword.control.odin
     - match: \b(if|else|when|for|in|defer|match|return|const)\b
       scope: keyword.control.odin
@@ -73,9 +78,9 @@ contexts:
       scope: constant.numeric.odin
     - match: '---'
       scope: constant.numeric.odin
-    - match: \b(var|let|type|macro|struct|enum|union|raw_union|map|bit_field)\b
+    - match: \b(var|let|type|macro|struct|enum|union|raw_union|map|bit_field|distinct)\b
       scope: storage.type.odin
-    - match: \b(cast|transmute)\b
+    - match: \b(cast|auto_cast|transmute)\b
       scope: keyword.function.odin
     - match: '(#\s*{{identifier}})'
       # scope: storage.constant.tag.odin
@@ -85,10 +90,12 @@ contexts:
       scope: keyword.operator.odin
 
   functions-and-declarations:
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(proc)\s*[(]'
+    - match: '\b({{identifier}})\s*([:]\s*[:])\s*(?:(inline|no_inline)?)\s*(proc)\s*[(\[]'
       captures:
         1: meta.function.odin entity.name.function.odin
-        2: storage.type.odin
+        2: keyword.operator.odin
+        3: storage.type.odin
+        4: storage.type.odin
     - match: \b(size_of|align_of|offset_of|type_of|type_info)\b\s*\(
       captures:
         1: keyword.function.odin
@@ -98,7 +105,7 @@ contexts:
     - match: ({{identifier}})\s*[!]?\s*[\(]
       captures:
         1: support.function.odin
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(struct|union|raw_union|enum|)'
+    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(struct|union|raw_union|enum|distinct)'
       captures:
         1: meta.type.odin entity.name.type.odin
         2: storage.type.odin
@@ -125,7 +132,7 @@ contexts:
       scope: storage.type.odin
 
   basic-types:
-    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f16|f32|f64)|(complex32|complex64|complex128)|(quaternion128|quaternion256)|byte|bool|string|rune|rawptr|any|typeid)\b'
+    - match: '\b((i8|i16|i32|i64|i128|int)|(u8|u16|u32|u64|u128|uint)|(f16|f32|f64)|(complex32|complex64|complex128)|(quaternion128|quaternion256)|byte|bool|string|cstring|rune|rawptr|any|typeid)\b'
       scope: storage.type.odin
 
   strings:
