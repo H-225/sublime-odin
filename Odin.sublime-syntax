@@ -67,8 +67,8 @@ contexts:
       scope: constant.numeric.odin
     - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xXh](\h|_)+))[i]?\b'
       scope: constant.numeric.odin
-    - match: '(?<![A-Za-z_0-9])\.{{identifier}}'
-      scope: storage.variable.odin
+    - match: '(?<![A-Za-z_0-9\.])\.{{identifier}}(?=!\()'
+      scope: constant.variable.odin
 
   keywords:
     - match: \b(import|export|foreign|package)\b
@@ -103,7 +103,7 @@ contexts:
         - include: operators
 
   operators:
-    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|!=?|->|\b_\b)
+    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|!=?|->|\b_\b|~=?)
       scope: keyword.operator.odin
 
   functions-and-declarations:
@@ -145,7 +145,7 @@ contexts:
         3: keyword.tag.odin
     - match: '\b({{identifier}})\s*(::)\s*'
       captures:
-        1: meta.constant.odin entity.name.type.odin support.constant.odin
+        1: meta.constant.odin support.constant.odin
         2: keyword.operator.odin
 
   types:
