@@ -103,7 +103,7 @@ contexts:
         - include: operators
 
   operators:
-    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|->|\b_\b)
+    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|!=?|->|\b_\b)
       scope: keyword.operator.odin
 
   functions-and-declarations:
