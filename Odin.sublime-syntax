@@ -7,7 +7,7 @@ file_extensions:
 first_line_match: "-[*]-( Mode:)? Odin -[*]-"
 scope: source.odin
 variables:
-  identifier: '\b[[:alpha:]_][[:alnum:]_]*\b'
+  identifier: '[A-Za-z_][A-Za-z0-9_]*'
   type_chars: '[[:alnum:]\s,._^<>\[\]-]'
   screaming_identifier: '\b[A-Z_](?![a-z])[A-Z_0-9]+\b'
 
@@ -18,20 +18,21 @@ contexts:
   global:
     - include: comments
     - include: types
+    - include: literals
+    - include: operators
     - include: keywords
     - include: functions-and-declarations
-    # - include: custom_styling
     - include: strings
     - include: string-escaped-char
+    # - include: custom_styling
 
 
   custom_styling:
     - match: \b({{screaming_identifier}})\b
       captures:
         1: storage.constant.odin
-
-    - match: \b([A-Z][a-z0-9]+)([_A-Z][a-z0-9]*)*\b
-      scope: storage.type.odin
+    # - match: \b([A-Z][a-z0-9]+)([_A-Z][a-z0-9]*)*\b
+    #   scope: support.variable.odin
 
   block-comment:
     - match: /\*
@@ -58,6 +59,17 @@ contexts:
         - match: \n
           pop: true
 
+  literals:
+    - include: strings
+    - match: \b(nil|true|false)\b
+      scope: constant.language.odin
+    - match: '(?<![A-Za-z_])(-?)(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
+      scope: constant.numeric.odin
+    - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xXh](\h|_)+))[i]?\b'
+      scope: constant.numeric.odin
+    - match: '(?<![A-Za-z_])\.{{identifier}}'
+      scope: storage.variable.odin
+
   keywords:
     - match: \b(import|export|foreign|package)\b
       scope: keyword.control.odin
@@ -70,36 +82,42 @@ contexts:
     - match: \b(asm|yield|await)\b
       scope: keyword.control.odin
     - match: \b(distinct|opaque)\b
-      scope: keyword.operator.odin
+      scope: keyword.control.odin
     - match: \b(context)\b
-      scope: keyword.operator.odin
-    - match: \b(nil|true|false)\b
-      scope: constant.language.odin
-    - match: '\b(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
-      scope: constant.numeric.odin
-    - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xXh](\h|_)+))[i]?\b'
-      scope: constant.numeric.odin
+      scope: keyword.control.odin
     - match: '---'
       scope: keyword.other.odin
     - match: \b(type|var|macro|struct|enum|union|map|set|bit_field|bit_set|typeid)\b
       scope: storage.type.odin
     - match: \b(cast|transmute|auto_cast)\b
       scope: keyword.function.odin
-    - match: '@'
-      scope: keyword.operator.odin
-    - match: '([#@]\s*{{identifier}})'
+    - match: ([@#]({{identifier}}))
       scope: keyword.tag.odin
+    - match: '@\('
+      scope: keyword.tag.odin
+      push:
+        - match: '\)'
+          pop: true
+          scope: keyword.tag.odin
+        - include: literals
+        - include: operators
+
+  operators:
+    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|->|\b_\b)
+      scope: keyword.operator.odin
 
   functions-and-declarations:
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(proc)'
+    - match: '\b({{identifier}})\s*(::)\s*(proc)'
       captures:
         1: meta.function.odin entity.name.function.odin
-        2: storage.type.odin
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(inline|no_inline)\s+(proc)'
-      captures:
-        1: meta.function.odin entity.name.function.odin
-        2: keyword.control.odin
+        2: keyword.operator.odin
         3: storage.type.odin
+    - match: '\b({{identifier}})\s*(::)\s*(inline|no_inline)\s+(proc)'
+      captures:
+        1: meta.function.odin entity.name.function.odin
+        2: keyword.operator.odin
+        3: keyword.control.odin
+        4: storage.type.odin
     - match: \b(size_of|align_of|offset_of|type_of|type_info_of|typeid_of)\b\s*\(
       captures:
         1: keyword.function.odin
@@ -114,18 +132,21 @@ contexts:
         1: support.function.odin
     - match: ({{identifier}})\s*[!]?\s*[\(]
       captures:
-        1: entity.function.odin
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*(struct|union|enum|bit_field|bit_set)'
+        1: meta.function-call.odin variable.function.odin
+    - match: '\b({{identifier}})\s*(::)\s*(struct|union|enum|bit_field|bit_set)'
       captures:
         1: meta.type.odin entity.name.type.odin
-        2: storage.type.odin
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*([#]\s*type)'
+        2: keyword.operator.odin
+        3: storage.type.odin
+    - match: '\b({{identifier}})\s*(::)\s*([#]\s*type)'
       captures:
         1: meta.type.odin entity.name.type.odin
-        2: keyword.tag.odin
-    - match: '\b({{identifier}})\s*[:]\s*[:]\s*'
+        2: keyword.operator.odin
+        3: keyword.tag.odin
+    - match: '\b({{identifier}})\s*(::)\s*'
       captures:
-        1: meta.constant.odin entity.name.type.odin
+        1: meta.constant.odin entity.name.type.odin support.constant.odin
+        2: keyword.operator.odin
 
   types:
     - match: '\b(struct|enum|union|bit_field|bit_set)\b(?:(\{)(\}))?'
