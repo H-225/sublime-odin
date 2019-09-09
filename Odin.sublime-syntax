@@ -63,11 +63,11 @@ contexts:
     - include: strings
     - match: \b(nil|true|false)\b
       scope: constant.language.odin
-    - match: '(?<![A-Za-z_])(-?)(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
+    - match: '(?<![A-Za-z_0-9])(-?)(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
       scope: constant.numeric.odin
     - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xXh](\h|_)+))[i]?\b'
       scope: constant.numeric.odin
-    - match: '(?<![A-Za-z_])\.{{identifier}}'
+    - match: '(?<![A-Za-z_0-9])\.{{identifier}}'
       scope: storage.variable.odin
 
   keywords:
