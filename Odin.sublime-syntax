@@ -25,7 +25,12 @@ contexts:
     - include: strings
     - include: string-escaped-char
     # - include: custom_styling
+    - include: punctuation
 
+
+  punctuation:
+    - match: (\(|\)|\[|\]|\{|\}|;|,)
+      scope: punctuation.odin
 
   custom_styling:
     - match: \b({{screaming_identifier}})\b
@@ -93,7 +98,7 @@ contexts:
       scope: keyword.function.odin
     - match: ([@#]({{identifier}}))
       scope: keyword.tag.odin
-    - match: '@\('
+    - match: '@(\()'
       scope: keyword.tag.odin
       push:
         - match: '\)'
@@ -118,21 +123,26 @@ contexts:
         2: keyword.operator.odin
         3: keyword.control.odin
         4: storage.type.odin
-    - match: \b(size_of|align_of|offset_of|type_of|type_info_of|typeid_of)\b\s*\(
+    - match: \b(size_of|align_of|offset_of|type_of|type_info_of|typeid_of)\b\s*(\()
       captures:
         1: keyword.function.odin
-    - match: (proc|macro)\s*[\(]
+        2: punctuation.odin
+    - match: (proc|macro)\s*(\()
       captures:
         1: storage.type.odin
-    - match: \b(len|cap|make|delete|new(_clone)?|free(_all)?|clear|reserve|resize|append(_string)?|copy|pop|(un)?ordered_remove)[\(]
-      captures:
-        "1": support.function.odin
-    - match: \b(assertf?|panicf?|unimplemented|unreachable|card|incl|excl|default_hash(_string)?|source_code_location_hash|init_global_temporary_allocator)\s*[\(]
+        2: punctuation.odin
+    - match: \b(len|cap|make|delete|new(?:_clone)?|free(?:_all)?|clear|reserve|resize|append(?:_string)?|copy|pop|(?:un)?ordered_remove)(\()
       captures:
         1: support.function.odin
-    - match: ({{identifier}})\s*[!]?\s*[\(]
+        2: punctuation.odin
+    - match: \b(assertf?|panicf?|unimplemented|unreachable|card|incl|excl|default_hash(?:_string)?|source_code_location_hash|init_global_temporary_allocator)\s*(\()
+      captures:
+        1: support.function.odin
+        2: punctuation.odin
+    - match: ({{identifier}})\s*(\!)?\s*(\()
       captures:
         1: meta.function-call.odin variable.function.odin
+        3: punctuation.odin
     - match: '\b({{identifier}})\s*(::)\s*(struct|union|enum|bit_field|bit_set)'
       captures:
         1: meta.type.odin entity.name.type.odin
@@ -145,15 +155,15 @@ contexts:
         3: keyword.tag.odin
     - match: '\b({{identifier}})\s*(::)\s*'
       captures:
-        1: meta.constant.odin support.constant.odin
+        1: meta.constant.odin, support.constant.odin
         2: keyword.operator.odin
 
   types:
     - match: '\b(struct|enum|union|bit_field|bit_set)\b(?:(\{)(\}))?'
       captures:
         1: storage.type.odin
-        2: meta.block.odin punctuation.definition.block.begin.odin
-        3: meta.block.odin punctuation.definition.block.end.odin
+        2: meta.block.odin, punctuation.definition.block.begin.odin
+        3: meta.block.odin, punctuation.definition.block.end.odin
     - match: (\[)(\d*)(\])(?=[[:alpha:]_])
       scope: meta.brackets.odin
       captures:
