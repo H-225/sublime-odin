@@ -78,7 +78,7 @@ contexts:
   keywords:
     - match: \b(import|export|foreign|package)\b
       scope: keyword.control.odin
-    - match: \b(if|else|when|for|in|notin|defer|switch|return|const|do)\b
+    - match: \b(if|else|when|where|for|in|notin|defer|switch|return|const|do)\b
       scope: keyword.control.odin
     - match: \b(fallthrough|break|continue|case|vector|dynamic|static)\b
       scope: keyword.control.odin
@@ -131,7 +131,7 @@ contexts:
       captures:
         1: storage.type.odin
         2: punctuation.odin
-    - match: \b(len|cap|make|delete|new(?:_clone)?|free(?:_all)?|clear|reserve|resize|append(?:_string)?|copy|pop|(?:un)?ordered_remove)(\()
+    - match: \b(?<!\.)(len|cap|make|delete|new(?:_clone)?|free(?:_all)?|clear|reserve|resize|append(?:_string)?|copy|pop|(?:un)?ordered_remove)(\()
       captures:
         1: support.function.odin
         2: punctuation.odin
