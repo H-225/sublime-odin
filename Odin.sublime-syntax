@@ -74,6 +74,8 @@ contexts:
       scope: constant.numeric.odin
     - match: '(?<![A-Za-z_0-9\.])\.{{identifier}}(?=!\()'
       scope: constant.variable.odin
+    - match: '---'
+      scope: constant.language.odin
 
   keywords:
     - match: \b(import|export|foreign|package)\b
@@ -90,8 +92,6 @@ contexts:
       scope: keyword.control.odin
     - match: \b(context)\b
       scope: keyword.control.odin
-    - match: '---'
-      scope: keyword.other.odin
     - match: \b(type|var|macro|struct|enum|union|map|set|bit_field|bit_set|typeid)\b
       scope: storage.type.odin
     - match: \b(cast|transmute|auto_cast)\b
