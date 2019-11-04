@@ -78,6 +78,8 @@ contexts:
       scope: constant.language.odin
 
   keywords:
+    - match: '\b(_)\b'
+      scope: keyword.control.discard.odin
     - match: \b(import|export|foreign|package)\b
       scope: keyword.control.odin
     - match: \b(if|else|when|where|for|in|notin|defer|switch|return|const|do)\b
@@ -108,7 +110,7 @@ contexts:
         - include: operators
 
   operators:
-    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|!=?|->|\b_\b|~=?|\.\.|!)
+    - match: (::|:=?|\?|=|\*=?|/=?|\+=?|-=?|>=?|<=?|>>=?|<<=?|%=?|\^=?|\|=?|\|\|=?|&=?|&&=?|!=?|->|~=?|\.\.|!)
       scope: keyword.operator.odin
 
   functions-and-declarations:
