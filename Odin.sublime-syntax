@@ -68,7 +68,7 @@ contexts:
     - include: strings
     - match: \b(nil|true|false)\b
       scope: constant.language.odin
-    - match: '(?<![A-Za-z_0-9])(-?)(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
+    - match: '(?<![A-Za-z_0-9])(-|\+?)(\d(\d|_)*(.\d(\d|_)*)?)((e|E)(\+|-)?\d+)?[ijk]?\b'
       scope: constant.numeric.odin
     - match: '\b((0b(0|1|_)+)|(0o(\d|_)+)|(0d(\d|_)+)|(0[xXh](\h|_)+))[i]?\b'
       scope: constant.numeric.odin
@@ -99,13 +99,13 @@ contexts:
     - match: \b(cast|transmute|auto_cast)\b
       scope: keyword.function.odin
     - match: ([@#]({{identifier}}))
-      scope: keyword.tag.odin
+      scope: keyword.other.tag.odin
     - match: '@(\()'
-      scope: keyword.tag.odin
+      scope: keyword.other.tag.odin
       push:
         - match: '\)'
           pop: true
-          scope: keyword.tag.odin
+          scope: keyword.other.tag.odin
         - include: literals
         - include: operators
 
