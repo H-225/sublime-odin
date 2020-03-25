@@ -48,6 +48,11 @@ contexts:
           scope: punctuation.definition.comment.odin
           pop: true
         - include: block-comment
+        - include: todo
+
+  todo:
+    - match: '(TODO|NOTE|IMPORTANT|FIXME|XXX)'
+      scope: keyword.odin
 
   comments:
     - include: block-comment
@@ -57,6 +62,7 @@ contexts:
         - meta_scope: comment.line.double-slash.odin
         - match: \n
           pop: true
+        - include: todo
     - match: "#!"
       scope: punctuation.definition.comment.odin
       push:
@@ -81,17 +87,17 @@ contexts:
     - match: '\b(_)\b'
       scope: keyword.control.discard.odin
     - match: \b(import|export|foreign|package)\b
-      scope: keyword.control.odin
+      scope: storage.type.odin
     - match: \b(if|else|when|where|for|in|notin|defer|switch|return|const|do)\b
       scope: keyword.control.odin
     - match: \b(fallthrough|break|continue|case|vector|dynamic|static)\b
       scope: keyword.control.odin
     - match: \b(using|inline|no_inline)\b
-      scope: keyword.control.odin
+      scope: storage.type.odin
     - match: \b(asm|yield|await)\b
       scope: keyword.control.odin
     - match: \b(distinct|opaque)\b
-      scope: keyword.control.odin
+      scope: storage.type.odin
     - match: \b(context)\b
       scope: keyword.control.odin
     - match: \b(var|macro|struct|enum|union|map|set|bit_field|bit_set|typeid)\b
@@ -154,11 +160,18 @@ contexts:
       captures:
         1: meta.type.odin entity.name.type.odin
         2: keyword.operator.odin
-        3: keyword.tag.odin
+        3: keyword.other.tag.odin
     - match: '\b({{identifier}})\s*(::)\s*'
       captures:
         1: meta.constant.odin, support.constant.odin
         2: keyword.operator.odin
+    # - match: '\b({{identifier}})\s*((,)\s*({{identifier}}))*\s*(?:(:=?)|(\s+in))'
+    #   captures:
+    #     1: variable.parameter.odin
+    #     3: punctuation.odin
+    #     4: variable.parameter.odin
+    #     5: keyword.operator.odin
+    #     6: keyword.control.odin
 
   types:
     - match: '\b(struct|enum|union|bit_field|bit_set)\b(?:(\{)(\}))?'
