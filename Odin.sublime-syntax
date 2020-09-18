@@ -88,7 +88,7 @@ contexts:
       scope: keyword.control.discard.odin
     - match: \b(import|export|foreign|package)\b
       scope: storage.type.odin
-    - match: \b(if|else|when|where|for|in|notin|defer|switch|return|const|do)\b
+    - match: \b(if|else|when|where|for|in|not_in|defer|switch|return|const|do)\b
       scope: keyword.control.odin
     - match: \b(fallthrough|break|continue|case|vector|dynamic|static)\b
       scope: keyword.control.odin
