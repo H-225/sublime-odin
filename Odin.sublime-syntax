@@ -105,9 +105,9 @@ contexts:
     - match: \b(cast|transmute|auto_cast)\b
       scope: keyword.function.odin
     - match: ([@#]({{identifier}}))
-      scope: keyword.other.tag.odin
+      scope: support.type.odin
     - match: '@(\()'
-      scope: keyword.other.tag.odin
+      scope: support.type.odin
       push:
         - match: '\)'
           pop: true
